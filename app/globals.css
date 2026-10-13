@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    /* ── Green primary ── */
+    --primary: 142 71% 28%;
+    --primary-foreground: 0 0% 100%;
+    --ring: 142 71% 28%;
+
+    --secondary: 141 30% 93%;
+    --secondary-foreground: 142 72% 20%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 141 40% 92%;
+    --accent-foreground: 142 72% 22%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --radius: 0.5rem;
+
+    /* ── Sidebar: deep green ── */
+    --sidebar: 142 60% 22%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-accent: 141 44% 88%;
+    --sidebar-accent-foreground: 142 60% 22%;
+    --sidebar-border: 142 50% 30%;
+
+    /* ── Badge colors ── */
+    --success: 142 71% 28%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 217.2 32.6% 11%;
+    --card-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --primary: 142 60% 42%;
+    --primary-foreground: 0 0% 100%;
+    --ring: 142 60% 42%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 142 30% 20%;
+    --accent-foreground: 142 60% 80%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --sidebar: 142 60% 15%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-accent: 142 40% 25%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 142 40% 22%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+}
+
+/* ── CKEditor overrides ─────────────────────────────── */
+.ck-editor-wrapper .ck-editor__editable {
+  min-height: 300px;
+  max-height: 420px;
+}
+.ck-editor-wrapper .ck.ck-toolbar {
+  border-radius: 6px 6px 0 0 !important;
+}
+.ck-editor-wrapper .ck.ck-editor__editable_inline {
+  border-radius: 0 0 6px 6px !important;
+}
+/* Article HTML preview */
+.artikel-preview h2 { font-size: 1.25rem; font-weight: 700; margin: 1rem 0 .5rem; }
+.artikel-preview h3 { font-size: 1.1rem;  font-weight: 600; margin: .75rem 0 .4rem; }
+.artikel-preview h4 { font-size: 1rem;    font-weight: 600; margin: .5rem 0 .25rem; }
+.artikel-preview p  { margin-bottom: .6rem; line-height: 1.6; }
+.artikel-preview ul, .artikel-preview ol { margin: .5rem 0 .5rem 1.5rem; }
+.artikel-preview ul { list-style: disc; }
+.artikel-preview ol { list-style: decimal; }
+.artikel-preview blockquote { border-left: 3px solid hsl(var(--border)); padding-left: .75rem; color: hsl(var(--muted-foreground)); margin: .5rem 0; }
+.artikel-preview table { width: 100%; border-collapse: collapse; margin: .5rem 0; font-size: .875rem; }
+.artikel-preview th, .artikel-preview td { border: 1px solid hsl(var(--border)); padding: .4rem .6rem; text-align: left; }
+.artikel-preview th { background: hsl(var(--muted)); font-weight: 600; }
+.artikel-preview a  { color: hsl(var(--primary)); text-decoration: underline; }

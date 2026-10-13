@@ -1,0 +1,24 @@
+# ── Next.js ──────────────────────────────────────────
+.next/
+out/
+
+# ── Dependencies ─────────────────────────────────────
+node_modules/
+
+# ── Build output ─────────────────────────────────────
+dist/
+build/
+
+# ── Environment ──────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Cache / TypeScript ───────────────────────────────
+.cache/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# ── Package manager ──────────────────────────────────
+.yarn/cache
+.pnp.*
