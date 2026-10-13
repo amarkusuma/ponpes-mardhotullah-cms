@@ -14,7 +14,7 @@ COPY . .
 
 # NEXT_PUBLIC_* dan rewrites di next.config di-bake saat build,
 # jadi nilainya harus diberikan sebagai build arg.
-ARG API_BASE_URL=http://backend:8080/api
+ARG API_BASE_URL=http://ponpes-backend:8080/api
 ARG NEXT_PUBLIC_API_BASE_URL=/api/backend
 ENV API_BASE_URL=$API_BASE_URL \
     NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
@@ -29,7 +29,7 @@ ENV NODE_ENV=production \
     PORT=3000 \
     HOSTNAME=0.0.0.0
 # API_BASE_URL dipakai server-side saat runtime; override lewat env container.
-ARG API_BASE_URL=http://backend:8080/api
+ARG API_BASE_URL=http://ponpes-backend:8080/api
 ENV API_BASE_URL=$API_BASE_URL
 RUN addgroup -S -g 1001 nodejs && adduser -S -u 1001 -G nodejs nextjs
 
