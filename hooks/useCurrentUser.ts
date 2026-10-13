@@ -11,8 +11,11 @@ interface CurrentUser {
 }
 
 export function useCurrentUser() {
-  return useQuery<CurrentUser>(['currentUser'], async () => {
-    const response = await api.get('/profile')
-    return response.data
+  return useQuery<CurrentUser>({
+    queryKey: ['currentUser'],
+    queryFn: async () => {
+      const response = await api.get('/profile')
+      return response.data
+    },
   })
 }

@@ -1,3 +1,5 @@
+'use client'
+
 import { useCurrentUser } from '../../hooks/useCurrentUser'
 
 export default function DashboardPage() {
