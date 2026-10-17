@@ -72,6 +72,19 @@ export function useUpdateArtikel(id: string) {
   })
 }
 
+export function useUploadThumbnailArtikel() {
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const form = new FormData()
+      form.append('gambar', file)
+      const res = await apiClient.post<ApiResponse<{ url: string }>>('/admin/artikel/upload-thumbnail', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      return res.data.data?.url ?? ''
+    },
+  })
+}
+
 export function useDeleteArtikel() {
   const qc = useQueryClient()
   return useMutation({
@@ -113,6 +126,19 @@ export function useUpdateBanner(id: string) {
       return res.data.data
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: kontenKeys.banner.list() }),
+  })
+}
+
+export function useUploadGambarBanner() {
+  return useMutation({
+    mutationFn: async (file: File) => {
+      const form = new FormData()
+      form.append('gambar', file)
+      const res = await apiClient.post<ApiResponse<{ url: string }>>('/admin/banner/upload', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      return res.data.data?.url ?? ''
+    },
   })
 }
 

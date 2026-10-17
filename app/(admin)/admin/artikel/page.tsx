@@ -13,15 +13,17 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { useArtikelList, useCreateArtikel, useUpdateArtikel, useDeleteArtikel } from '@/hooks/use-konten'
+import { useArtikelList, useCreateArtikel, useUpdateArtikel, useDeleteArtikel, useUploadThumbnailArtikel } from '@/hooks/use-konten'
 import type { ArtikelItem, StatusArtikel } from '@/lib/types/konten'
 import RichTextEditor from '@/components/editor/RichTextEditor'
+import ThumbnailUpload from '@/components/konten/thumbnail-upload'
 
 const schema = z.object({
   judul: z.string().min(5, 'Min 5 karakter'),
   slug: z.string().min(1, 'Wajib diisi'),
   konten: z.string().min(1, 'Konten wajib diisi'),
   kategori: z.string().optional(),
+  thumbnail: z.string().optional(),
   status: z.enum(['draft', 'published', 'archived']),
 })
 type ArtikelForm = z.infer<typeof schema>
@@ -51,6 +53,8 @@ export default function ArtikelPage() {
   const createMutation = useCreateArtikel()
   const updateMutation = useUpdateArtikel(selected?.id ?? '')
   const deleteMutation = useDeleteArtikel()
+  const uploadMutation = useUploadThumbnailArtikel()
+  const [uploading, setUploading] = useState(false)
 
   const rows = data?.data ?? []
   const totalPages = data?.pagination?.total_pages ?? 1
@@ -61,9 +65,10 @@ export default function ArtikelPage() {
   })
 
   const kontenValue = watch('konten')
+  const thumbnailValue = watch('thumbnail')
 
   const openCreate = () => {
-    reset({ status: 'draft', konten: '' })
+    reset({ status: 'draft', konten: '', thumbnail: '' })
     setSelected(null)
     setMode('create')
   }
@@ -74,6 +79,7 @@ export default function ArtikelPage() {
       slug: a.slug,
       konten: a.konten ?? '',
       kategori: a.kategori,
+      thumbnail: a.thumbnail ?? '',
       status: a.status,
     })
     setSelected(a)
@@ -163,8 +169,17 @@ export default function ArtikelPage() {
                   : rows.map((a) => (
                     <tr key={a.id} className="border-b hover:bg-muted/50">
                       <td className="px-4 py-3">
-                        <p className="font-medium line-clamp-1">{a.judul}</p>
-                        <p className="text-xs text-muted-foreground">{a.slug}</p>
+                        <div className="flex items-center gap-3">
+                          <div className="h-10 w-16 shrink-0 overflow-hidden rounded bg-muted">
+                            {a.thumbnail && (
+                              <img src={a.thumbnail} alt="" className="h-full w-full object-cover" />
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-medium line-clamp-1">{a.judul}</p>
+                            <p className="text-xs text-muted-foreground">{a.slug}</p>
+                          </div>
+                        </div>
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">{a.kategori || '-'}</td>
                       <td className="px-4 py-3">
@@ -244,6 +259,16 @@ export default function ArtikelPage() {
               </div>
 
               <div className="space-y-1.5">
+                <Label>Thumbnail</Label>
+                <ThumbnailUpload
+                  value={thumbnailValue}
+                  onChange={(url) => setValue('thumbnail', url, { shouldDirty: true })}
+                  upload={uploadMutation.mutateAsync}
+                  onUploadingChange={setUploading}
+                />
+              </div>
+
+              <div className="space-y-1.5">
                 <Label>Status</Label>
                 <select
                   className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm"
@@ -270,7 +295,7 @@ export default function ArtikelPage() {
               <Button type="button" variant="outline" className="flex-1" onClick={() => setMode(null)}>
                 Batal
               </Button>
-              <Button type="submit" className="flex-1" disabled={isPending}>
+              <Button type="submit" className="flex-1" disabled={isPending || uploading}>
                 {isPending ? 'Menyimpan...' : 'Simpan'}
               </Button>
             </div>
@@ -294,6 +319,14 @@ export default function ArtikelPage() {
             </div>
           </DialogHeader>
           <div className="flex-1 overflow-y-auto px-6 py-5">
+            {selected?.thumbnail && (
+              <img
+                src={selected.thumbnail}
+                alt={selected.judul}
+                className="mb-5 w-full rounded-lg object-cover"
+                style={{ aspectRatio: '16/9' }}
+              />
+            )}
             {selected?.konten ? (
               <div
                 className="artikel-preview text-sm"

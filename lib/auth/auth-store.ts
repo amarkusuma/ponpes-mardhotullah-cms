@@ -52,6 +52,9 @@ export const useAuthStore = create<AuthState>()(
     {
       name: 'simpeg-auth',
       partialize: (state) => ({ user: state.user }),
+      // Read localStorage only after mount (see Providers). Hydrating while the store is
+      // created makes the first client render differ from the server HTML (no user).
+      skipHydration: true,
     }
   )
 )

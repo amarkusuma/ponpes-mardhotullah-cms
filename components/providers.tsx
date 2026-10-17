@@ -3,7 +3,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeProvider } from 'next-themes'
 import { Toaster } from 'sonner'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAuthStore } from '@/lib/auth/auth-store'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -14,6 +15,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
         },
       })
   )
+
+  useEffect(() => {
+    useAuthStore.persist.rehydrate()
+  }, [])
 
   return (
     <QueryClientProvider client={queryClient}>

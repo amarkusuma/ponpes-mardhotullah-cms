@@ -12,15 +12,30 @@ export interface ArtikelItem {
   created_at: string
 }
 
+// Website pages whose header (hero) image comes from a banner
+export const HALAMAN_BANNER = [
+  'home', 'profile', 'gallery', 'faq', 'pendaftaran', 'berita', 'artikel', 'pusat-informasi',
+] as const
+export type HalamanBanner = (typeof HALAMAN_BANNER)[number]
+
+export const HALAMAN_BANNER_LABELS: Record<HalamanBanner, string> = {
+  home: 'Home',
+  profile: 'Profile',
+  gallery: 'Gallery',
+  faq: 'FAQ',
+  pendaftaran: 'Pendaftaran',
+  berita: 'Kabar & Berita',
+  artikel: 'Artikel',
+  'pusat-informasi': 'Pusat Informasi',
+}
+
 export interface BannerItem {
   id: string
   judul: string
   gambar_url: string
-  link?: string
+  halaman: HalamanBanner
   urutan: number
   is_active: boolean
-  tanggal_mulai: string
-  tanggal_selesai: string
 }
 
 export interface CreateArtikelForm {
@@ -35,11 +50,9 @@ export interface CreateArtikelForm {
 export interface CreateBannerForm {
   judul: string
   gambar_url: string
-  link?: string
+  halaman: HalamanBanner
   urutan: number
   is_active: boolean
-  tanggal_mulai: string
-  tanggal_selesai: string
 }
 
 export interface GaleriItem {
